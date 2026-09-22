@@ -18,7 +18,9 @@ void funClickLogin() async {
         password: pass
     );
     print("LOGIN BIEN!!!");
-    Navigator.popAndPushNamed(miContexto, "/HomeView");
+    // Tras hacer login, en lugar de ir a Home, vamos al Onboarding 
+    // para que se encargue de descargar el perfil y guardarlo en el DataHolder
+    Navigator.popAndPushNamed(miContexto, "/OnboardingView");
   } on FirebaseAuthException catch (e) {
     print("----------------->>>>>> " + e.toString());
     if (e.code == 'user-not-found') {
