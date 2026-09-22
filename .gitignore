@@ -1,3 +1,13 @@
+# Firebase & Secretos
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+*.env
+
+# Android SDK Local (CRÍTICO para alternar PC/portátil)
+android/local.properties
+local.properties
+
 # Miscellaneous
 *.class
 *.log
@@ -18,15 +28,11 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
