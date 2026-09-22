@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'DataHolder.dart';
+import 'Perfil.dart';
+
 class OnboardingView extends StatefulWidget{
   const OnboardingView({super.key});
 
@@ -16,20 +19,6 @@ class _OnboardingView extends State<OnboardingView> {
   @override
   void initState() {
     super.initState();
-    if (FirebaseAuth.instance.currentUser == null) {
-      Navigator.popAndPushNamed(context, "/LoginView");
-    } else {
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      final docRef = db.collection("Perfiles").doc(uid);
-      docRef.get().then(
-        (DocumentSnapshot doc) {
-          final data = doc.data() as Map<String, dynamic>?;
-          print("EL NOMBRE DEL USUARIO ES: ${data?['Nombre']}");
-          Navigator.popAndPushNamed(context, "/HomeView");
-        },
-        onError: (e) => print("Error getting document: $e"),
-      );
-    }
     cargarRecursos();
   }
 
@@ -46,6 +35,26 @@ class _OnboardingView extends State<OnboardingView> {
     setState(() {
       _iProgress = 100;
     });
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      Navigator.popAndPushNamed(context, "/LoginView");
+    } else {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      final docRef = db.collection("Perfiles").doc(uid);
+      
+      final docSnap = await docRef.get();
+      
+      if (docSnap.exists) {
+        final perfil = Perfil.fromFirestore(docSnap as DocumentSnapshot<Map<String, dynamic>>, null);
+        DataHolder.instance.perfilUsuario = perfil;
+        
+        print("EL NOMBRE DEL USUARIO ES: ${DataHolder.instance.perfilUsuario.name}");
+        Navigator.popAndPushNamed(context, "/HomeView");
+      } else {
+        // NO TIENE PERFIL EN LA BASE DE DATOS
+        Navigator.popAndPushNamed(context, "/ProfileView");
+      }
+    }
   }
 
   Future<void> recursos1() async {
