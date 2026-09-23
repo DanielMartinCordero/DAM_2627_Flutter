@@ -34,10 +34,17 @@ class Perfil {
   }
   Future<void> descargarMensajes() async{
     FirebaseFirestore db = FirebaseFirestore.instance;
-    db.collection("Perfiles/${uid}/Mensajes")
-        .where("leído", isEqualTo: false ).limit(20)
+    final docRef=db.collection("Perfiles/"+uid!+"/Mensajes")
+        .where("leído", isEqualTo: false ).limit(99)
         .withConverter(
-        fromFirestore: Mensaje.fromFirestore, toFirestore: toFirestore)
-  }
+        fromFirestore: Mensaje.fromFirestore,
+        toFirestore: (Mensaje mensaje, _) => mensaje.toFirestore());
+
+    final querySnapshot=await docRef.get();
+
+    for (var docSnapshot in querySnapshot.docs) {
+      mensajes.add(docSnapshot.data());
+    }
+    print("Hay en total: "+mensajes.length.toString());  }
 
 }

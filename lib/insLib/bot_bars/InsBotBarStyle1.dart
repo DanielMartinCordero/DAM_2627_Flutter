@@ -2,56 +2,72 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class InsBotBarStyle1 extends StatefulWidget {
-  bool _isNotificationBadgeEnable = true;
-  bool _isMessagesBadgeEnable = true;
+  bool blBadge1=true;
+  String sBadge2="";
+  int iBarIndex=0;
 
-  int _bottomNavIndex = 0;
-  Widget build(BuildContext context){
-    return NavigationBar(
-      onDestinationSelected: (int index) {
-        switch (index){
-          case 0: print("HOME");
-          case 1: {
-            print("NOTIFICATION");
-            setState(() {
-              _isNotificationBadgeEnable=false;
-            });
-          }
-          case 2: {
-            print("MESSAGES");
-            setState(() {
-              _isMessagesBadgeEnable=false;
-            });
-          }
+  InsBotBarStyle1({required this.blBadge1,required this.sBadge2,required this.iBarIndex});
 
-        }
+  @override
+  State<InsBotBarStyle1> createState() => _InsBotBarStyle1State();
+}
+
+class _InsBotBarStyle1State extends State<InsBotBarStyle1> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
+  void BotBarItemSelected(int index){
+    switch (index){
+      case 0: {
+        Navigator.popAndPushNamed(context, "/HomeView");
+      }
+      case 1: {
+        print("NOTIFICATION");
         setState(() {
-          _bottomNavIndex = index;
+          widget.blBadge1=false;
         });
-      },
+      }
+      case 2: {
+        print("MESSAGES");
+        setState(() {
+          widget.sBadge2="";
+        });
+        Navigator.popAndPushNamed(context, "/Messagesview");
+      }
+
+    }
+    setState(() {
+      widget.iBarIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return NavigationBar(
+      onDestinationSelected:BotBarItemSelected,
       indicatorColor: Colors.amber,
-      selectedIndex: _bottomNavIndex,
+      selectedIndex: widget.iBarIndex,
       destinations: <Widget>[
         NavigationDestination(
           selectedIcon: Icon(Icons.home),
           icon: Icon(Icons.home_outlined),
-          label: 'Home',
+          label: 'Principal',
         ),
         NavigationDestination(
-          icon: Badge(isLabelVisible:_isNotificationBadgeEnable, child: Icon(Icons.notifications_sharp)),
+          icon: Badge(isLabelVisible:widget.blBadge1, child: Icon(Icons.notifications_sharp)),
           label: 'Notifications',
         ),
         NavigationDestination(
-          icon: Badge(isLabelVisible:_isMessagesBadgeEnable, label: Text('2'), child: Icon(Icons.messenger_sharp)),
+          icon: Badge(isLabelVisible:widget.sBadge2.isNotEmpty, label: Text(widget.sBadge2), child: Icon(Icons.messenger_sharp)),
           label: 'Messages',
         ),
       ],
     );
-  }
 
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }

@@ -8,20 +8,23 @@ import 'package:flutter/material.dart';
 import '../FbObjects/Perfil.dart';
 
 class ProfileView extends StatelessWidget{
+  TextEditingController nombreController = TextEditingController();
   TextEditingController edadController = TextEditingController();
   TextEditingController alturaController = TextEditingController();
   FirebaseFirestore db= FirebaseFirestore.instance;
+  late BuildContext miContext;
 
   void funConfirmar() {
-    if (edadController.text.isNotEmpty && alturaController.text.isNotEmpty) {
+    if (edadController.text.isNotEmpty && alturaController.text.isNotEmpty && nombreController.text.isNotEmpty) {
       final perfiles = db.collection("Perfiles");
       final perfil = new Perfil(
           uid:FirebaseAuth.instance.currentUser!.uid,
-          name: "Yony",
+          name: nombreController.text,
           edad: int.parse(edadController.text),
           altura: double.parse(alturaController.text)
       );
       perfiles.doc(FirebaseAuth.instance.currentUser!.uid).set(perfil.toFirestore());
+      Navigator.popAndPushNamed(miContext, "/HomeView");
     }
   }
   void funSalir(){
@@ -29,7 +32,28 @@ class ProfileView extends StatelessWidget{
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    miContext=context;
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(controller: nombreController,decoration: InputDecoration(hintText: "Nombre"),),
+            TextField(controller: edadController,decoration: InputDecoration(hintText: "Edad"),),
+            TextField(controller: alturaController,decoration: InputDecoration(hintText: "Altura"),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(onPressed: funConfirmar, child: Text("Confirmar")),
+                TextButton(onPressed: funSalir, child: Text("Salir")),
+              ],
+            )
+          ],
+
+        ),
+
+      ),
+
+    );
   }
 }
