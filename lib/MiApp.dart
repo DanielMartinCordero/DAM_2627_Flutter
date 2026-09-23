@@ -1,11 +1,12 @@
 
-import 'package:dam2_2627_a/LoginView.dart';
-import 'package:dam2_2627_a/HomeView.dart';
-import 'package:dam2_2627_a/OnboardingView.dart';
-import 'package:dam2_2627_a/RegisterView.dart';
+import 'package:dam2_2627_a/views/LoginView.dart';
+import 'package:dam2_2627_a/views/HomeView.dart';
+import 'package:dam2_2627_a/views/MessagesView.dart';
+import 'package:dam2_2627_a/views/OnboardingView.dart';
+import 'package:dam2_2627_a/views/RegisterView.dart';
 import 'package:flutter/material.dart';
 
-import 'ProfileView.dart';
+import 'views/ProfileView.dart';
 
 class MiApp extends StatelessWidget {
   double dbNumber = 0.0;
@@ -20,6 +21,7 @@ class MiApp extends StatelessWidget {
         "/RegisterView" : (context) => RegisterView(),
         "/OnboardingView" : (context) => OnboardingView(),
         "/ProfileView" : (context) => ProfileView(),
+        "/MessagesView" : (context) => MessagesView(),
       },
       initialRoute: "/OnboardingView",
     );

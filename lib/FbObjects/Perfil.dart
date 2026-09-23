@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'Mensaje.dart';
+
 class Perfil {
 
   final String? uid;
   final String? name;
   final int? edad;
   final double? altura;
+  List<Mensaje> mensajes = List.empty();
 
   Perfil({this.uid, this.name, this.edad, this.altura});
 
@@ -29,6 +32,12 @@ class Perfil {
       if (altura != null) "altura": altura,
     };
   }
-
+  Future<void> descargarMensajes() async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    db.collection("Perfiles/${uid}/Mensajes")
+        .where("leído", isEqualTo: false ).limit(20)
+        .withConverter(
+        fromFirestore: Mensaje.fromFirestore, toFirestore: toFirestore)
+  }
 
 }

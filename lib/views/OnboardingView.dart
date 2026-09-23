@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'DataHolder.dart';
-import 'Perfil.dart';
+import '../DataHolder.dart';
+import '../FbObjects/Perfil.dart';
 
 class OnboardingView extends StatefulWidget{
   const OnboardingView({super.key});
